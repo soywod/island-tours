@@ -1,0 +1,55 @@
+<form (submit)="send()" [formGroup]="userForm" novalidate>
+	<div class="form-group" [class.has-error]="isInvalid(lastNameCtrl)" [class.has-success]="lastNameCtrl.valid">
+		<input formControlName="last-name" class="form-control" placeholder="Nom *">
+		<label *ngIf="hasError(lastNameCtrl, 'required')" class="control-label">Nom requis</label>
+	</div>
+	
+	<div class="form-group" [class.has-error]="isInvalid(firstNameCtrl)" [class.has-success]="firstNameCtrl.valid">
+		<input formControlName="first-name" class="form-control" placeholder="Prénom *">
+		<label *ngIf="hasError(firstNameCtrl, 'required')" class="control-label">Prénom requis</label>
+	</div>
+	
+	<div class="form-group" [class.has-error]="isInvalid(addressCtrl)" [class.has-success]="addressCtrl.valid">
+		<textarea formControlName="address" rows="3" class="form-control" placeholder="Adresse *"></textarea>
+		<label *ngIf="hasError(addressCtrl, 'required')" class="control-label">Adresse requise</label>
+	</div>
+	
+	<div class="row">
+		<div class="col-xs-5">
+			<div class="form-group" [class.has-error]="isInvalid(zipCtrl)" [class.has-success]="zipCtrl.valid">
+				<input formControlName="zip" class="form-control" placeholder="Code postal *">
+				<label *ngIf="hasError(zipCtrl, 'required')" class="control-label">Code postal requis</label>
+				<label *ngIf="hasError(zipCtrl, 'pattern')" class="control-label">Code postal invalide</label>
+			</div>
+		</div>
+		
+		<div class="col-xs-7">
+			<div class="form-group" [class.has-error]="isInvalid(cityCtrl)" [class.has-success]="cityCtrl.valid">
+				<input formControlName="city" class="form-control" placeholder="Ville *">
+				<label *ngIf="hasError(cityCtrl, 'required')" class="control-label">Ville requise</label>
+			</div>
+		</div>
+	</div>
+	
+	<div class="form-group" [class.has-error]="isInvalid(countryCtrl)" [class.has-success]="countryCtrl.valid">
+		<select formControlName="country" class="form-control">
+			<option value="">Pays *</option>
+			<option value="zef">fefze</option>
+		</select>
+		<label *ngIf="hasError(countryCtrl, 'required')" class="control-label">Pays requis</label>
+	</div>
+	
+	<div class="form-group" [class.has-error]="isInvalid(emailCtrl)" [class.has-success]="emailCtrl.valid">
+		<input type="email" formControlName="email" class="form-control" placeholder="Email *">
+		<label *ngIf="hasError(emailCtrl, 'required')" class="control-label">Adresse email requise</label>
+		<label *ngIf="hasError(emailCtrl, 'pattern')" class="control-label">Adresse email invalide</label>
+	</div>
+	
+	<div class="text-right">
+		<button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
+			c'est parti
+		</button>
+	</div>
+	
+	<div class="text-success">* Obligatoire</div>
+</form>

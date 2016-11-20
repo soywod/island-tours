@@ -1,0 +1,54 @@
+@import "../assets/less/fonts";
+@import "../../node_modules/bootstrap/less/variables";
+
+h1, h2 {
+  font-family: gobold, sans-serif;
+  text-transform: uppercase;
+}
+
+h1  {
+  margin-bottom: 75px;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 15px;
+}
+
+.lobster {
+  font-family: lobster, sans-serif;
+  text-transform: lowercase;
+}
+
+section {
+  display: flex;
+  flex-flow: column;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  article {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+
+  footer {
+    height: 120px;
+    background: url(../assets/img/background.jpg) no-repeat center center;
+    background-size: cover;
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  h1 {
+    font-size: floor((@font-size-base * 2.2));
+  }
+
+  h2 {
+    font-size: floor((@font-size-base * 1.2));
+  }
+}
