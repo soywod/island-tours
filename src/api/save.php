@@ -1,5 +1,7 @@
 <?php
 
+require_once 'database.php';
+
 if (strtoupper($_SERVER['REQUEST_METHOD']) !== 'POST') {
 	jsonResponse(false, 'Méthode non supportée (' . $_SERVER['REQUEST_METHOD'] . ')');
 }
@@ -21,8 +23,6 @@ checkCaptcha(
 	$_POST['g-recaptcha-response'],
 	$_SERVER['REMOTE_ADDR']
 );
-
-require_once 'database.php';
 
 $stmt = $pdo->prepare('
 	INSERT INTO `users`

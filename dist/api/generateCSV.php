@@ -1,5 +1,6 @@
 <?php
 
+/*
 require_once 'database.php';
 
 const CSV_FOLDER = '/tmp';
@@ -24,3 +25,4 @@ echo $user['first_name'];
 }
 
 fclose($csv);
+*/
