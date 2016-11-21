@@ -1,3 +1,9 @@
+<div class="alert alert-success" *ngIf="hasBeenSubmitted">
+	Votre demande a bien été prise en compte.
+</div>
+
+<div class="alert alert-danger" *ngIf=getError() [textContent]="getError()"></div>
+
 <form (submit)="send()" [formGroup]="userForm" novalidate>
 	<div class="form-group" [class.has-error]="isInvalid(lastNameCtrl)" [class.has-success]="lastNameCtrl.valid">
 		<input formControlName="last-name" class="form-control" placeholder="Nom *">
@@ -45,11 +51,17 @@
 		<label *ngIf="hasError(emailCtrl, 'pattern')" class="control-label">Adresse email invalide</label>
 	</div>
 	
-	<div class="text-right">
-		<button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">
-			c'est parti
-		</button>
+	<div class="form-group">
+		<re-captcha (captchaResponse)="onCaptchaValidated($event)"
+		            site_key="6LdRfAwUAAAAAMR1cuiKo66iA6WWET9aifiCU4WB"
+		            theme="dark">
+		</re-captcha>
 	</div>
 	
-	<div class="text-success">* Obligatoire</div>
+	<div class="text-right">
+		<button type="submit" class="btn btn-primary" [disabled]="isSubmitDisabled()"
+		        [textContent]="getSubmitText()"></button>
+	</div>
+	
+	<footer class="text-success">* Obligatoire</footer>
 </form>

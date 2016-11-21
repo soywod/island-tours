@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
+import { Http } from "@angular/http";
 
 @Component({
 	selector   : 'island-form',
 	templateUrl: './island-form.component.html',
-	styleUrls  : [ './island-form.component.less' ]
+	styleUrls  : ['./island-form.component.less']
 })
 export class IslandFormComponent {
 	userForm: FormGroup;
@@ -19,7 +18,13 @@ export class IslandFormComponent {
 	countryCtrl: FormControl;
 	emailCtrl: FormControl;
 	
-	constructor(fb: FormBuilder) {
+	isSubmitting: boolean;
+	hasBeenSubmitted: boolean;
+	submitError: string;
+	
+	captcha: string;
+	
+	constructor(private fb: FormBuilder, private http: Http) {
 		this.firstNameCtrl = fb.control('', Validators.required);
 		this.lastNameCtrl = fb.control('', Validators.required);
 		this.addressCtrl = fb.control('', Validators.required);
@@ -43,8 +48,13 @@ export class IslandFormComponent {
 			'zip'       : this.zipCtrl,
 			'city'      : this.cityCtrl,
 			'country'   : this.countryCtrl,
-			'email'     : this.emailCtrl
+			'email'     : this.emailCtrl,
 		});
+		
+		this.isSubmitting = false;
+		this.hasBeenSubmitted = false;
+		this.submitError = undefined;
+		this.captcha = '';
 	}
 	
 	isInvalid(ctrl: FormControl): boolean {
@@ -56,6 +66,49 @@ export class IslandFormComponent {
 	}
 	
 	send() {
-		console.log(this.userForm.value);
+		const formData = new FormData();
+		
+		this.isSubmitting = true;
+		
+		for (let index in this.userForm.value) {
+			formData.append(index, this.userForm.value[index]);
+		}
+		
+		formData.append('g-recaptcha-response', this.captcha);
+		
+		this
+			.http
+			.post(`/api/save.php`, formData)
+			.subscribe(res => {
+				let data = res.json();
+				console.log(data);
+				
+				if (!data.success) {
+					this.submitError = data.data;
+				}
+				else {
+					this.userForm.reset();
+					this.countryCtrl.value = '';
+					this.hasBeenSubmitted = true;
+				}
+				
+				this.isSubmitting = false;
+			});
+	}
+	
+	onCaptchaValidated(payload) {
+		this.captcha = payload;
+	}
+	
+	isSubmitDisabled() {
+		return this.userForm.invalid || this.isSubmitting || this.captcha === '';
+	}
+	
+	getSubmitText() {
+		return this.isSubmitting ? 'envoi en cours ...' : "c'est parti";
+	}
+	
+	getError() {
+		return this.submitError;
 	}
 }

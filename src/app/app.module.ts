@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { IslandFormComponent } from './island-form/island-form.component';
+import { ReCaptchaModule } from "angular2-recaptcha";
 
 @NgModule({
 	declarations: [
@@ -15,7 +16,8 @@ import { IslandFormComponent } from './island-form/island-form.component';
 		BrowserModule,
 		FormsModule,
 		ReactiveFormsModule,
-		HttpModule
+		HttpModule,
+		ReCaptchaModule
 	],
 	providers   : [ FormBuilder ],
 	bootstrap   : [ AppComponent ]
