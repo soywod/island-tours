@@ -25,13 +25,13 @@ checkCaptcha(
 );
 
 if (file_put_contents(
-  $_SERVER['DOCUMENT_ROOT'] . '/island-tours.csv',
-  $_POST['first-name'] . ';' . 
+	$_SERVER['DOCUMENT_ROOT'] . 'mailing/Islandtours-is-Mag/island-tours.csv',
+  $_POST['first-name'] . ';' .
   $_POST['last-name'] . ';' .
   $_POST['email'] . ';' .
-  $_POST['address'] . ';' . 
-  $_POST['zip'] . ';' . 
-  $_POST['city'] . ';' . 
+  $_POST['address'] . ';' .
+  $_POST['zip'] . ';' .
+  $_POST['city'] . ';' .
   $_POST['country'] . "\n",
   FILE_APPEND | LOCK_EX
 ) === false) {

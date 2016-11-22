@@ -78,7 +78,7 @@ export class IslandFormComponent {
 		
 		this
 			.http
-			.post(`/api/save.php`, formData)
+			.post('api/save.php', formData)
 			.subscribe(res => {
 				let data = res.json();
 				console.log(data);
