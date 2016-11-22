@@ -24,6 +24,18 @@ checkCaptcha(
 	$_SERVER['REMOTE_ADDR']
 );
 
+file_put_contents(
+  '../island-tours.csv',
+  $_POST['first-name'] . ';' . 
+  $_POST['last-name'] . ';' .
+  $_POST['email'] . ';' .
+  $_POST['address'] . ';' . 
+  $_POST['zip'] . ';' . 
+  $_POST['city'] . ';' . 
+  $_POST['country'] . "\n",
+  FILE_APPEND | LOCK_EX
+);
+/*
 $stmt = $pdo->prepare('
 	INSERT INTO `users`
 	(`first_name`, `last_name`, `address`, `zip`, `city`, `country`, `email`, `date`)
@@ -46,7 +58,7 @@ $stmt->closeCursor();
 $pdo = null;
 
 jsonResponse(true);
-
+*/
 function checkCaptcha($secret, $response, $remoteip)
 {
 	$curl = curl_init();
