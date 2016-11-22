@@ -40,7 +40,10 @@
 	<div class="form-group" [class.has-error]="isInvalid(countryCtrl)" [class.has-success]="countryCtrl.valid">
 		<select formControlName="country" class="form-control">
 			<option value="">Pays *</option>
+			<option value="Belgique">Belgique</option>
 			<option value="France métropolitaine">France métropolitaine</option>
+			<option value="Luxembourg">Luxembourg</option>
+			<option value="Suisse">Suisse</option>
 		</select>
 		<label *ngIf="hasError(countryCtrl, 'required')" class="control-label">Pays requis</label>
 	</div>

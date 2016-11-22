@@ -1,9 +1,7 @@
 <?php
 
-require_once 'database.php';
-
 if (strtoupper($_SERVER['REQUEST_METHOD']) !== 'POST') {
-	jsonResponse(false, 'Méthode non supportée (' . $_SERVER['REQUEST_METHOD'] . ')');
+	json(false, 'Méthode non supportée (' . $_SERVER['REQUEST_METHOD'] . ')');
 }
 
 if (
@@ -16,7 +14,9 @@ if (
 	!isset($_POST['country']) ||
 	!isset($_POST['email']) ||
 	!isset($_POST['g-recaptcha-response'])
-) jsonResponse(false, 'Vous devez remplir tous les champs');
+) {
+	json(false, 'Vous devez remplir tous les champs');
+}
 
 checkCaptcha(
 	'6LdRfAwUAAAAAN0JzdMgpJbNh9qf4Dpn_beo-W6a',
@@ -24,8 +24,8 @@ checkCaptcha(
 	$_SERVER['REMOTE_ADDR']
 );
 
-file_put_contents(
-  '../island-tours.csv',
+if (file_put_contents(
+  $_SERVER['DOCUMENT_ROOT'] . '/island-tours.csv',
   $_POST['first-name'] . ';' . 
   $_POST['last-name'] . ';' .
   $_POST['email'] . ';' .
@@ -34,31 +34,14 @@ file_put_contents(
   $_POST['city'] . ';' . 
   $_POST['country'] . "\n",
   FILE_APPEND | LOCK_EX
-);
-/*
-$stmt = $pdo->prepare('
-	INSERT INTO `users`
-	(`first_name`, `last_name`, `address`, `zip`, `city`, `country`, `email`, `date`)
-	VALUES
-	(?, ?, ?, ?, ?, ?, ?, NOW())
-');
+) === false) {
+	json(false, 'Erreur lors de la sauvegarde des données');
+}
 
-if (!$stmt->execute([
-	$_POST['first-name'],
-	$_POST['last-name'],
-	$_POST['address'],
-	$_POST['zip'],
-	$_POST['city'],
-	$_POST['country'],
-	$_POST['email']
-])
-) jsonResponse(false, 'Erreur lors de l\'insert en base');
+json(true);
 
-$stmt->closeCursor();
-$pdo = null;
+// ==================== FUNCTIONS ==================== //
 
-jsonResponse(true);
-*/
 function checkCaptcha($secret, $response, $remoteip)
 {
 	$curl = curl_init();
@@ -72,6 +55,13 @@ function checkCaptcha($secret, $response, $remoteip)
 	curl_close($curl);
 	
 	if ($res['success'] !== true) {
-		jsonResponse(false, 'Erreur lors de la validation du captcha');
+		json(false, 'Erreur lors de la validation du captcha');
 	}
+}
+
+function json($success, $data = null)
+{
+	header('Content-Type: application/json');
+	echo json_encode(['success' => !!$success, 'data' => $data]);
+	exit($success ? 0 : -1);
 }

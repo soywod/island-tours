@@ -88,7 +88,7 @@ export class IslandFormComponent {
 				}
 				else {
 					this.userForm.reset();
-					this.countryCtrl.value = '';
+					this.countryCtrl.reset('');
 					this.hasBeenSubmitted = true;
 				}
 				
